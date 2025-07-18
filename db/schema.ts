@@ -50,7 +50,7 @@ export const challenges = pgTable("challenges", {
     lessonId: integer("lesson_id").references(() => lessons.id, { onDelete: "cascade"}).notNull(),
     type: challengesEnum("type").notNull(),
     question: text("question").notNull(),
-    order: integer("order").notNull(),
+    order: integer("order"),
 });
 
 export const challengesRelations = relations(challenges, ({ one, many }) => ({
@@ -69,6 +69,7 @@ export const challengeOptions = pgTable("challenge_options", {
     correct: boolean("correct").notNull(),
     imageSrc: text("image_src"),
     audioSrc: text("audio_src"),
+    order: integer("order").notNull(),
 });
 
 export const challengeOptionsRelations = relations(challengeOptions, ({ one }) => ({
@@ -104,16 +105,6 @@ export const userProgress = pgTable("user_progress",{
 export const userProgressRelations = relations(userProgress, ({ one }) =>({
     activeCourse: one(courses, { fields: [userProgress.activeCourseId], references: [courses.id] }),
 }));
-
-//For the shop subscription
-export const userSubscription = pgTable("user_subscription", {
-    id: serial("id").primaryKey(),
-    userId: text("user_id").notNull().unique(),
-    stripeCustomerId: text("stripe_customer_id").notNull().unique(),
-    stripeSubscriptionId: text("stripe_subscription_id").notNull().unique(),
-    stripePriceId: text("stripe_price_id").notNull(),
-    stripeCurrentPeriodEnd: text("stripe_current_period_end").notNull(),
-});
 
 export const vocabulary = pgTable("vocabulary", {
     id: serial("id").primaryKey(),
